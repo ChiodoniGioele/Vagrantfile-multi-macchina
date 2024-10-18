@@ -14,8 +14,10 @@ Vagrant.configure("2") do |config|
 
     # VM Web
     config.vm.define "web" do |web|
-        
+      
+      
       web.vm.box = BOX_IMAGE
+      web.ssh.insert_key = false
       web.vm.hostname = NAME_WEB
       
       # Imposta CPU e RAM
@@ -43,6 +45,7 @@ Vagrant.configure("2") do |config|
     # VM Database
     config.vm.define "db" do |db|
       db.vm.box = BOX_IMAGE
+      db.ssh.insert_key = false
       db.vm.hostname = NAME_DB
       
       # CPU e RAM
