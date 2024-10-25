@@ -1,25 +1,20 @@
 #!/bin/bash
 
-# Aggiorna il sistema
-sudo apt-get update -y
+MYSQL_ROOT_PASSWORD="Password&1"
+DB_NAME="vagrant"
+DB_USER="vagrant_user"
+DB_PASSWORD="Admin\$00"
 
-# Installa MariaDB o MySQL
-sudo apt-get install -y mariadb-server mariadb-client
+apt-get update
+apt-get install -y mysql-server debconf-utils
 
-# Configura MariaDB (disabilita l'accesso root remoto e crea un nuovo utente)
-sudo mysql -e "UPDATE mysql.user SET Password=PASSWORD('root_password') WHERE User='root';"
-sudo mysql -e "DELETE FROM mysql.user WHERE User='';"
-sudo mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost');"
-sudo mysql -e "FLUSH PRIVILEGES;"
+echo "mysql-server mysql-server/root_password password $MYSQL_ROOT_PASSWORD" | debconf-set-selections
+echo "mysql-server mysql-server/root_password_again password $MYSQL_ROOT_PASSWORD" | debconf-set-selections
 
-# Crea un nuovo utente non-root per il database e un database
-sudo mysql -e "CREATE DATABASE flask_db;"
-sudo mysql -e "CREATE USER 'flask_user'@'%' IDENTIFIED BY 'flask_password';"
-sudo mysql -e "GRANT ALL PRIVILEGES ON flask_db.* TO 'flask_user'@'%';"
-sudo mysql -e "FLUSH PRIVILEGES;"
+sudo sed -i 's/^bind-address.*$/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo systemctl restart mysql
 
-# Modifica la configurazione di MariaDB per permettere connessioni remote
-sudo sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
-
-# Riavvia MariaDB
-sudo systemctl restart mariadb
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';"
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
