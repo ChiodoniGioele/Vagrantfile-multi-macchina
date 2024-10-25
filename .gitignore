@@ -1,1 +1,21 @@
-.*
+# Ignora i file della directory .vagrant
+.vagrant/
+
+# File di configurazione SSH per Vagrant
+.vagrant/boxes/
+.vagrant/machines/
+.vagrant/tmp/
+
+# Log di Vagrant
+vagrant.log
+
+# File di configurazione generici
+*.box
+*.log
+*.pid
+*.swp
+*.swo
+
+# Altri file di sistema
+.DS_Store
+Thumbs.db
