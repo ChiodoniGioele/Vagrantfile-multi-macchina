@@ -1,1 +1,0 @@
-{"virtualbox":{"/var/www/html":{"guestpath":"/var/www/html","hostpath":"E:/Vagrantfile-multi-macchina/website","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"E:/Vagrantfile-multi-macchina","disabled":false,"__vagrantfile":true}}}
