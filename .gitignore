@@ -1,5 +1,5 @@
 # Ignora i file della directory .vagrant
-.vagrant/
+.vagrant/*
 
 # File di configurazione SSH per Vagrant
 .vagrant/boxes/
@@ -8,7 +8,7 @@
 
 # Log di Vagrant
 vagrant.log
-
+    
 # File di configurazione generici
 *.box
 *.log
